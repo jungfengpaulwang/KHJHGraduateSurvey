@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="format.xsl" ?>
+<ValidateRule Name="國中畢業未升學未就業學生動向">
+    <DuplicateDetection>
+        <Detector Name="身分證號">
+          <Field Name="身分證號" />
+        </Detector>
+    </DuplicateDetection>
+    <FieldList>  
+        <Field Required="True" Name="填報學年度" Description="" >
+            <Validate AutoCorrect="False" Description="「填報學年度」僅允許使用阿拉伯數字民國年。" ErrorType="Error" Validator="填報學年度允許範圍" When="" /> 
+        </Field>
+        <Field Required="True" Name="姓名" Description="使用身分證號比對姓名" EmptyAlsoValidate="False" />
+        <Field Required="True" Name="身分證號" Description="識別學生用" >
+          <Validate AutoCorrect="False" Description="「身分證號」不允許空白。" ErrorType="Error" Validator="不可空白" When="" />
+        </Field>
+        <Field Required="True" Name="畢業生目前動向" Description="" >
+          <Validate AutoCorrect="False" Description="「畢業生目前動向」不允許空白，只允許 1~9 的阿拉伯數字。" ErrorType="Error" Validator="畢業生目前動向允許範圍" When="" />
+        </Field>
+        <Field Required="True" Name="是否需要教育部協助" Description="「畢業生目前動向」填寫 7 時，此欄位才需填寫「是」或「否」" EmptyAlsoValidate="False" />
+        <Field Required="True" Name="備註" Description="「畢業生目前動向」填寫 7 時，此欄位須填寫聯絡電話；「畢業生目前動向」填寫 8 時，此欄位須填寫失聯原因；「畢業生目前動向」填寫 9 時，此欄位須註明情況" EmptyAlsoValidate="False" />
+    </FieldList>
+    <ValidatorList>
+      <FieldValidator Name="不可空白" Type="STRINGLENGTH">
+        <MinLength>1</MinLength>
+      </FieldValidator>
+      <FieldValidator Name="填報學年度允許範圍" Type="Integer">
+        <MinValue>102</MinValue>
+        <MaxValue>999</MaxValue>
+      </FieldValidator>
+      <FieldValidator Name="畢業生目前動向允許範圍" Type="Integer">
+        <MinValue>1</MinValue>
+        <MaxValue>9</MaxValue>
+      </FieldValidator>
+      <FieldValidator Name="是否需要教育部協助列舉" Type="Enumeration">
+        <Item Value="是" />
+        <Item Value="否" />
+      </FieldValidator>
+      <!--
+      <RowValidator Name="是否需要教育部協助" Type="" />
+      <RowValidator Name="備註" Type="" />
+      -->
+    </ValidatorList>
+    <!--
+    <RowValidate>
+      <Validate AutoCorrect="False" Description="「畢業生目前動向」填寫「7」時，「是否需要教育部協助」必須填寫「是」或「否」。" ErrorType="Error" Validator="是否需要教育部協助" When="是否需要教育部協助" />
+      <Validate AutoCorrect="False" Description="「升學與就業情形」填寫「1」時，「升學-入學方式」必須填寫「1~9」。" ErrorType="Error" Validator="升學-入學方式" When="升學-入學方式" />
+      <Validate AutoCorrect="False" Description="「升學與就業情形」填寫「1」時，「升學-學制別」必須填寫「1~9」。" ErrorType="Error" Validator="升學-學制別" When="升學-學制別" />
+      <Validate AutoCorrect="False" Description="「升學與就業情形」填寫「3」時，「未升學未就業-動向」必須填寫「1~6」。" ErrorType="Error" Validator="未升學未就業" When="未升學未就業 "/>
+    </RowValidate>
+    <ConditionList>
+      <Condition Name="是否需要教育部協助">
+        <Or>
+          <And>
+            <Evaluate Evaluator="StaticInteger" Field="畢業生目前動向" Operator="=" Value="7" />
+            <Evaluate Evaluator="StaticString" Field="是否需要教育部協助" Operator="=" Value="是" />
+          </And>
+          <And>
+            <Evaluate Evaluator="StaticInteger" Field="畢業生目前動向" Operator="=" Value="7" />
+            <Evaluate Evaluator="StaticString" Field="是否需要教育部協助" Operator="=" Value="否" />
+          </And>
+          <And>
+            <Evaluate Evaluator="StaticInteger" Field="畢業生目前動向" Operator="!=" Value="7" />
+            <Evaluate Evaluator="StaticString" Field="是否需要教育部協助" Operator="=" Value="" />
+          </And>
+        </Or>
+      </Condition>
+    </ConditionList>
+    -->
+</ValidateRule>
