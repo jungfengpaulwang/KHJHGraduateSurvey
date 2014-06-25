@@ -38,6 +38,8 @@
             this.Content = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.lblMessage = new System.Windows.Forms.Label();
             this.txtSurveyYear = new System.Windows.Forms.TextBox();
+            this.txtMemo = new System.Windows.Forms.TextBox();
+            this.labelX2 = new DevComponents.DotNetBar.LabelX();
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,7 +52,7 @@
             // 
             this.labelX1.BackgroundStyle.Class = "";
             this.labelX1.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.labelX1.Location = new System.Drawing.Point(32, 9);
+            this.labelX1.Location = new System.Drawing.Point(15, 9);
             this.labelX1.Name = "labelX1";
             this.labelX1.Size = new System.Drawing.Size(74, 21);
             this.labelX1.TabIndex = 9;
@@ -92,7 +94,7 @@
             this.dgvData.RowTemplate.Height = 24;
             this.dgvData.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dgvData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvData.Size = new System.Drawing.Size(521, 146);
+            this.dgvData.Size = new System.Drawing.Size(521, 182);
             this.dgvData.TabIndex = 6;
             // 
             // Item
@@ -116,29 +118,55 @@
             // 
             this.lblMessage.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.lblMessage.ForeColor = System.Drawing.Color.Red;
-            this.lblMessage.Location = new System.Drawing.Point(331, 7);
+            this.lblMessage.Location = new System.Drawing.Point(214, 7);
             this.lblMessage.Name = "lblMessage";
-            this.lblMessage.Size = new System.Drawing.Size(189, 27);
+            this.lblMessage.Size = new System.Drawing.Size(321, 27);
             this.lblMessage.TabIndex = 12;
             this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtSurveyYear
             // 
-            this.txtSurveyYear.Location = new System.Drawing.Point(112, 8);
+            this.txtSurveyYear.Location = new System.Drawing.Point(95, 8);
             this.txtSurveyYear.Name = "txtSurveyYear";
             this.txtSurveyYear.Size = new System.Drawing.Size(100, 25);
             this.txtSurveyYear.TabIndex = 13;
+            // 
+            // txtMemo
+            // 
+            this.txtMemo.Location = new System.Drawing.Point(15, 267);
+            this.txtMemo.Multiline = true;
+            this.txtMemo.Name = "txtMemo";
+            this.txtMemo.Size = new System.Drawing.Size(520, 85);
+            this.txtMemo.TabIndex = 15;
+            // 
+            // labelX2
+            // 
+            this.labelX2.AutoSize = true;
+            this.labelX2.BackColor = System.Drawing.Color.Transparent;
+            // 
+            // 
+            // 
+            this.labelX2.BackgroundStyle.Class = "";
+            this.labelX2.BackgroundStyle.CornerType = DevComponents.DotNetBar.eCornerType.Square;
+            this.labelX2.Location = new System.Drawing.Point(15, 237);
+            this.labelX2.Name = "labelX2";
+            this.labelX2.Size = new System.Drawing.Size(34, 21);
+            this.labelX2.TabIndex = 14;
+            this.labelX2.Text = "備註";
+            this.labelX2.TextAlignment = System.Drawing.StringAlignment.Center;
             // 
             // Approach_DetailContent
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.txtMemo);
+            this.Controls.Add(this.labelX2);
             this.Controls.Add(this.txtSurveyYear);
             this.Controls.Add(this.lblMessage);
             this.Controls.Add(this.labelX1);
             this.Controls.Add(this.dgvData);
             this.Name = "Approach_DetailContent";
-            this.Size = new System.Drawing.Size(550, 200);
+            this.Size = new System.Drawing.Size(550, 360);
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -153,5 +181,7 @@
         private DevComponents.DotNetBar.Controls.DataGridViewLabelXColumn Item;
         private System.Windows.Forms.DataGridViewComboBoxColumn Content;
         private System.Windows.Forms.TextBox txtSurveyYear;
+        private System.Windows.Forms.TextBox txtMemo;
+        private DevComponents.DotNetBar.LabelX labelX2;
     }
 }

@@ -64,9 +64,15 @@
       <HintPath>Library\FISCA.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="FISCA.DSAClient">
+      <HintPath>C:\ischool\kernel\FISCA.DSAClient.dll</HintPath>
+    </Reference>
     <Reference Include="FISCA.DSAUtil">
       <HintPath>Library\FISCA.DSAUtil.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="FISCA.LogAgent">
+      <HintPath>C:\ischool\kernel\FISCA.LogAgent.dll</HintPath>
     </Reference>
     <Reference Include="FISCA.Permission, Version=1.1.0.8, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -107,9 +113,7 @@
     <Compile Include="DetailContent\Approach.Designer.cs">
       <DependentUpon>Approach.cs</DependentUpon>
     </Compile>
-    <Compile Include="DetailContent\Vagrant.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="DetailContent\Vagrant.cs" />
     <Compile Include="DetailContent\Vagrant.Designer.cs">
       <DependentUpon>Vagrant.cs</DependentUpon>
     </Compile>
@@ -125,6 +129,7 @@
     <Compile Include="Export\Approach_Export.designer.cs">
       <DependentUpon>Approach_Export.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions.cs" />
     <Compile Include="Import\Approach_Import.cs" />
     <Compile Include="Import\Vagrant_Import.cs" />
     <Compile Include="Program.cs" />
@@ -140,6 +145,13 @@
     <Compile Include="Report\Approach_Report.Designer.cs">
       <DependentUpon>Approach_Report.cs</DependentUpon>
     </Compile>
+    <Compile Include="Report\Approach_Upload.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Report\Approach_Upload.Designer.cs">
+      <DependentUpon>Approach_Upload.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\ContractServices.cs" />
     <Compile Include="UDT\FieldAttribute.cs" />
     <Compile Include="UDT\Approach.cs" />
     <Compile Include="UDT\ApproachStatistics.cs" />
@@ -166,8 +178,13 @@
     <EmbeddedResource Include="Report\Approach_Report.resx">
       <DependentUpon>Approach_Report.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Report\Approach_Upload.resx">
+      <DependentUpon>Approach_Upload.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\102學年度國中畢業學生進路調查填報表格.doc" />
+    <None Include="Resources\102學年度國中畢業學生進路調查填報複核表.doc" />
     <None Include="Resources\format.xsl" />
     <None Include="Resources\高雄市國中畢業生進路統計報表樣版.doc" />
   </ItemGroup>
@@ -177,6 +194,8 @@
     <None Include="Resources\export.image.png" />
     <None Include="Resources\loading.gif" />
     <None Include="Resources\paste_64.png" />
+    <None Include="Resources\admissions_up_128.png" />
+    <None Include="Resources\school_search_128.png" />
     <Content Include="Resources\Vagrant_Import.xml">
       <SubType>Designer</SubType>
     </Content>

@@ -1,15 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JH_KH_GraduateSurvey", "JH_KH_GraduateSurvey.csproj", "{A6FE8768-172F-43FC-8C15-99E567DB0800}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMBA.DocumentValidator", "..\NTU_EMBA\EMBA.DocumentValidator\EMBA.DocumentValidator.csproj", "{A108F18E-D035-45F3-B9D4-F1B612C0DAD9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMBA.Validator", "..\NTU_EMBA\EMBA.Validator\EMBA.Validator.csproj", "{FEA37838-0B12-483A-8091-4B1A9A2C9378}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMBA.Import", "..\NTU_EMBA\EMBA.Import\EMBA.Import.csproj", "{3BA76CDE-1BBD-46EA-ACF0-65B1D0344626}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,18 +13,6 @@ Global
 		{A6FE8768-172F-43FC-8C15-99E567DB0800}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6FE8768-172F-43FC-8C15-99E567DB0800}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6FE8768-172F-43FC-8C15-99E567DB0800}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A108F18E-D035-45F3-B9D4-F1B612C0DAD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A108F18E-D035-45F3-B9D4-F1B612C0DAD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A108F18E-D035-45F3-B9D4-F1B612C0DAD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A108F18E-D035-45F3-B9D4-F1B612C0DAD9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FEA37838-0B12-483A-8091-4B1A9A2C9378}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FEA37838-0B12-483A-8091-4B1A9A2C9378}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FEA37838-0B12-483A-8091-4B1A9A2C9378}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FEA37838-0B12-483A-8091-4B1A9A2C9378}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3BA76CDE-1BBD-46EA-ACF0-65B1D0344626}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3BA76CDE-1BBD-46EA-ACF0-65B1D0344626}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3BA76CDE-1BBD-46EA-ACF0-65B1D0344626}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3BA76CDE-1BBD-46EA-ACF0-65B1D0344626}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

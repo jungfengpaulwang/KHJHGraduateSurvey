@@ -56,6 +56,10 @@
             "升學：學制別"}, -1, System.Drawing.Color.Red, System.Drawing.Color.Empty, null);
             System.Windows.Forms.ListViewItem listViewItem20 = new System.Windows.Forms.ListViewItem(new string[] {
             "未升學未就業：動向"}, -1, System.Drawing.Color.Red, System.Drawing.Color.Empty, null);
+            System.Windows.Forms.ListViewItem listViewItem21 = new System.Windows.Forms.ListViewItem(new string[] {
+            "是否需要教育部協助"}, -1, System.Drawing.Color.Red, System.Drawing.Color.Empty, null);
+            System.Windows.Forms.ListViewItem listViewItem22 = new System.Windows.Forms.ListViewItem(new string[] {
+            "備註"}, -1, System.Drawing.Color.Red, System.Drawing.Color.Empty, null);
             this.chkSelectAll = new DevComponents.DotNetBar.Controls.CheckBoxX();
             this.btnExport = new DevComponents.DotNetBar.ButtonX();
             this.btnExit = new DevComponents.DotNetBar.ButtonX();
@@ -143,6 +147,8 @@
             listViewItem18.StateImageIndex = 0;
             listViewItem19.StateImageIndex = 0;
             listViewItem20.StateImageIndex = 0;
+            listViewItem21.StateImageIndex = 0;
+            listViewItem22.StateImageIndex = 0;
             this.FieldContainer.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1,
             listViewItem2,
@@ -163,7 +169,9 @@
             listViewItem17,
             listViewItem18,
             listViewItem19,
-            listViewItem20});
+            listViewItem20,
+            listViewItem21,
+            listViewItem22});
             this.FieldContainer.Location = new System.Drawing.Point(34, 51);
             this.FieldContainer.Name = "FieldContainer";
             this.FieldContainer.Size = new System.Drawing.Size(424, 260);
@@ -284,7 +292,6 @@
             this.Controls.Add(this.btnExport);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.chkSelectAll);
-            this.DoubleBuffered = true;
             this.Name = "Approach_Export";
             this.Text = "";
             this.TitleText = "匯出資料至 Excel";

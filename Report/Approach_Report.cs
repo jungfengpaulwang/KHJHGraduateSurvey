@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Aspose.Cells;
 using Aspose.Words;
 using FISCA.Data;
 using FISCA.Presentation.Controls;
 using FISCA.UDT;
-using K12.Data;
 
 namespace JH_KH_GraduateSurvey.Report
 {
@@ -111,12 +107,17 @@ namespace JH_KH_GraduateSurvey.Report
                 decimal B1_sum = 0; decimal B2_sum = 0; decimal B3_sum = 0; decimal B4_sum = 0;
                 decimal C1_sum = 0; decimal C2_sum = 0; decimal C3_sum = 0; decimal C4_sum = 0;
                 decimal D1_sum = 0; decimal D2_sum = 0; decimal D3_sum = 0; decimal D4_sum = 0;
+
                 decimal E2_sum = 0; decimal F2_sum = 0; decimal G2_sum = 0; decimal H2_sum = 0; decimal I2_sum = 0; 
                 decimal E3_sum = 0; decimal F3_sum = 0; decimal G3_sum = 0; decimal H3_sum = 0; decimal I3_sum = 0; decimal J3_sum = 0;
+
+                decimal K4_sum = 0; decimal L4_sum = 0; decimal M4_sum = 0; decimal N4_sum = 0; decimal O4_sum = 0; decimal P4_sum = 0;
+                decimal Q4_sum = 0; decimal R4_sum = 0; decimal S4_sum = 0;
+
                 decimal E4_sum = 0; decimal F4_sum = 0; decimal G4_sum = 0; decimal H4_sum = 0; decimal I4_sum = 0; decimal J4_sum = 0;
                 foreach (UDT.Approach record in Records)
                 {
-                    //  全校畢業學生升學就業情形
+                    //  升學或就業情形
                     if (record.Q1 == 1)
                         B1_sum += 1;
                     if (record.Q1 == 2)
@@ -124,7 +125,7 @@ namespace JH_KH_GraduateSurvey.Report
                     if (record.Q1 == 3)
                         D1_sum += 1;
 
-                    //  全校畢業學生升學之就讀學校情形
+                    //  就讀學校
                     if (record.Q2 == 1)
                         B2_sum += 1;
                     if (record.Q2 == 2)
@@ -141,8 +142,7 @@ namespace JH_KH_GraduateSurvey.Report
                         H2_sum += 1;
                     if (record.Q2 == 8)
                         I2_sum += 1;
-
-                    //  全校畢業學生升學就讀學校之學制別
+                    //  學制別
                     if (record.Q3 == 1)
                         B3_sum += 1;
                     if (record.Q3 == 2)
@@ -162,7 +162,7 @@ namespace JH_KH_GraduateSurvey.Report
                     if (record.Q3 == 9)
                         J3_sum += 1;
 
-                    //  全校畢業學生升學之入學方式情形
+                    //  入學方式
                     if (record.Q4 == 1)
                         B4_sum += 1;
                     if (record.Q4 == 2)
@@ -181,6 +181,25 @@ namespace JH_KH_GraduateSurvey.Report
                         I4_sum += 1;
                     if (record.Q4 == 9)
                         J4_sum += 1;
+                    if (record.Q4 == 10)
+                        K4_sum += 1;
+                    if (record.Q4 == 11)
+                        L4_sum += 1;
+                    if (record.Q4 == 12)
+                        M4_sum += 1;
+                    if (record.Q4 == 13)
+                        N4_sum += 1;
+                    if (record.Q4 == 14)
+                        O4_sum += 1;
+                    if (record.Q4 == 15)
+                        P4_sum += 1;
+                    if (record.Q4 == 16)
+                        Q4_sum += 1;
+                    if (record.Q4 == 17)
+                        R4_sum += 1;
+                    if (record.Q4 == 18)
+                        S4_sum += 1;                      
+
                 }
 
                 #region 全校畢業學生升學就業情形
@@ -191,7 +210,6 @@ namespace JH_KH_GraduateSurvey.Report
                 mergeKeyValue.Add("B1/A1", Math.Round(B1_sum * 100 / A1_sum, 2, MidpointRounding.AwayFromZero));
                 mergeKeyValue.Add("C1/A1", Math.Round(C1_sum * 100 / A1_sum, 2, MidpointRounding.AwayFromZero));
                 mergeKeyValue.Add("D1/A1", Math.Round(D1_sum * 100 / A1_sum, 2, MidpointRounding.AwayFromZero));
-
                 #endregion
 
                 #region 全校畢業學生升學之就讀學校情形
@@ -213,10 +231,9 @@ namespace JH_KH_GraduateSurvey.Report
                 mergeKeyValue.Add("G2/A2", A2_sum > 0 ? Math.Round(G2_sum * 100 / A2_sum, 2, MidpointRounding.AwayFromZero) : 0);
                 mergeKeyValue.Add("H2/A2", A2_sum > 0 ? Math.Round(H2_sum * 100 / A2_sum, 2, MidpointRounding.AwayFromZero) : 0);
                 mergeKeyValue.Add("I2/A2", A2_sum > 0 ? Math.Round(I2_sum * 100 / A2_sum, 2, MidpointRounding.AwayFromZero) : 0);
-
                 #endregion
 
-                #region 全校畢業學生升學就讀學校之學制別
+                #region 學制別
                 A3_sum = B3_sum + C3_sum + D3_sum + E3_sum + F3_sum + G3_sum + H3_sum + I3_sum + J3_sum;
                 mergeKeyValue.Add("A3", A3_sum);
                 mergeKeyValue.Add("B3", B3_sum);
@@ -228,21 +245,23 @@ namespace JH_KH_GraduateSurvey.Report
                 mergeKeyValue.Add("H3", H3_sum);
                 mergeKeyValue.Add("I3", I3_sum);
                 mergeKeyValue.Add("J3", J3_sum);
-                mergeKeyValue.Add("B3/A3", A3_sum > 0 ? Math.Round(B3_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
-                mergeKeyValue.Add("C3/A3", A3_sum > 0 ? Math.Round(C3_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
-                mergeKeyValue.Add("D3/A3", A3_sum > 0 ? Math.Round(D3_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
-                mergeKeyValue.Add("E3/A3", A3_sum > 0 ? Math.Round(E3_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
-                mergeKeyValue.Add("F3/A3", A3_sum > 0 ? Math.Round(F3_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
-                mergeKeyValue.Add("G3/A3", A3_sum > 0 ? Math.Round(G3_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
-                mergeKeyValue.Add("H3/A3", A3_sum > 0 ? Math.Round(H3_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
-                mergeKeyValue.Add("I3/A3", A3_sum > 0 ? Math.Round(I3_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
-                mergeKeyValue.Add("J3/A3", A3_sum > 0 ? Math.Round(J3_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
-
+                mergeKeyValue.Add("B3/A3", A3_sum > 0 ? Math.Round(B4_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
+                mergeKeyValue.Add("C3/A3", A3_sum > 0 ? Math.Round(C4_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
+                mergeKeyValue.Add("D3/A3", A3_sum > 0 ? Math.Round(D4_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
+                mergeKeyValue.Add("E3/A3", A3_sum > 0 ? Math.Round(E4_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
+                mergeKeyValue.Add("F3/A3", A3_sum > 0 ? Math.Round(F4_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
+                mergeKeyValue.Add("G3/A3", A3_sum > 0 ? Math.Round(G4_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
+                mergeKeyValue.Add("H3/A3", A3_sum > 0 ? Math.Round(H4_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
+                mergeKeyValue.Add("I3/A3", A3_sum > 0 ? Math.Round(I4_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
+                mergeKeyValue.Add("J3/A3", A3_sum > 0 ? Math.Round(J4_sum * 100 / A3_sum, 2, MidpointRounding.AwayFromZero) : 0);
                 #endregion
 
-                #region 全校畢業學生升學之入學方式情形
-                A4_sum = B4_sum + C4_sum + D4_sum + E4_sum + F4_sum + G4_sum + H4_sum + I4_sum + J4_sum;
+                #region 入學方式
+                A4_sum = B4_sum + C4_sum + D4_sum + E4_sum + F4_sum + G4_sum + H4_sum + I4_sum + J4_sum +
+                         K4_sum + L4_sum + M4_sum + N4_sum + O4_sum + P4_sum + Q4_sum + R4_sum + S4_sum;
+
                 mergeKeyValue.Add("A4", A4_sum);
+
                 mergeKeyValue.Add("B4", B4_sum);
                 mergeKeyValue.Add("C4", C4_sum);
                 mergeKeyValue.Add("D4", D4_sum);
@@ -252,6 +271,16 @@ namespace JH_KH_GraduateSurvey.Report
                 mergeKeyValue.Add("H4", H4_sum);
                 mergeKeyValue.Add("I4", I4_sum);
                 mergeKeyValue.Add("J4", J4_sum);
+                mergeKeyValue.Add("K4", K4_sum);
+                mergeKeyValue.Add("L4", L4_sum);
+                mergeKeyValue.Add("M4", M4_sum);
+                mergeKeyValue.Add("N4", N4_sum);
+                mergeKeyValue.Add("O4", O4_sum);
+                mergeKeyValue.Add("P4", P4_sum);
+                mergeKeyValue.Add("Q4", Q4_sum);
+                mergeKeyValue.Add("R4", R4_sum);
+                mergeKeyValue.Add("S4", S4_sum);
+
                 mergeKeyValue.Add("B4/A4", A4_sum > 0 ? Math.Round(B4_sum * 100 / A4_sum, 2, MidpointRounding.AwayFromZero) : 0);
                 mergeKeyValue.Add("C4/A4", A4_sum > 0 ? Math.Round(C4_sum * 100 / A4_sum, 2, MidpointRounding.AwayFromZero) : 0);
                 mergeKeyValue.Add("D4/A4", A4_sum > 0 ? Math.Round(D4_sum * 100 / A4_sum, 2, MidpointRounding.AwayFromZero) : 0);
@@ -262,6 +291,15 @@ namespace JH_KH_GraduateSurvey.Report
                 mergeKeyValue.Add("I4/A4", A4_sum > 0 ? Math.Round(I4_sum * 100 / A4_sum, 2, MidpointRounding.AwayFromZero) : 0);
                 mergeKeyValue.Add("J4/A4", A4_sum > 0 ? Math.Round(J4_sum * 100 / A4_sum, 2, MidpointRounding.AwayFromZero) : 0);
 
+                mergeKeyValue.Add("K4/A4", A4_sum > 0 ? Math.Round(K4_sum * 100 / A4_sum, 2, MidpointRounding.AwayFromZero) : 0);
+                mergeKeyValue.Add("L4/A4", A4_sum > 0 ? Math.Round(L4_sum * 100 / A4_sum, 2, MidpointRounding.AwayFromZero) : 0);
+                mergeKeyValue.Add("M4/A4", A4_sum > 0 ? Math.Round(M4_sum * 100 / A4_sum, 2, MidpointRounding.AwayFromZero) : 0);
+                mergeKeyValue.Add("N4/A4", A4_sum > 0 ? Math.Round(N4_sum * 100 / A4_sum, 2, MidpointRounding.AwayFromZero) : 0);
+                mergeKeyValue.Add("O4/A4", A4_sum > 0 ? Math.Round(O4_sum * 100 / A4_sum, 2, MidpointRounding.AwayFromZero) : 0);
+                mergeKeyValue.Add("P4/A4", A4_sum > 0 ? Math.Round(P4_sum * 100 / A4_sum, 2, MidpointRounding.AwayFromZero) : 0);
+                mergeKeyValue.Add("Q4/A4", A4_sum > 0 ? Math.Round(Q4_sum * 100 / A4_sum, 2, MidpointRounding.AwayFromZero) : 0);
+                mergeKeyValue.Add("R4/A4", A4_sum > 0 ? Math.Round(R4_sum * 100 / A4_sum, 2, MidpointRounding.AwayFromZero) : 0);
+                mergeKeyValue.Add("S4/A4", A4_sum > 0 ? Math.Round(S4_sum * 100 / A4_sum, 2, MidpointRounding.AwayFromZero) : 0);
                 #endregion
 
                 //  學校代碼及名稱
@@ -287,7 +325,7 @@ namespace JH_KH_GraduateSurvey.Report
                 if (x.Exception != null)
                     MessageBox.Show(x.Exception.InnerException.Message);
                 else
-                    Completed("畢業生成績審核表", x.Result);
+                    Completed("國中畢業學生進路調查填報表格", x.Result);
             }, System.Threading.CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
         }
     }

@@ -1,9 +1,5 @@
-﻿using FISCA.UDT;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using FISCA.UDT;
 
 namespace JH_KH_GraduateSurvey.UDT
 {
@@ -35,15 +31,15 @@ namespace JH_KH_GraduateSurvey.UDT
         public int? Q2 { get; set; }
 
         /// <summary>
-        /// 升學-入學方式
+        /// 升學-學制別
         /// </summary>
-        [JH_KH_GraduateSurvey.UDT.Field(Field = "q3", Indexed = false, Caption = "升學-入學方式")]
+        [JH_KH_GraduateSurvey.UDT.Field(Field = "q3", Indexed = false, Caption = "升學-學制別")]
         public int? Q3 { get; set; }
 
         /// <summary>
-        /// 升學-學制別
+        /// 升學-入學方式
         /// </summary>
-        [JH_KH_GraduateSurvey.UDT.Field(Field = "q4", Indexed = false, Caption = "升學-學制別")]
+        [JH_KH_GraduateSurvey.UDT.Field(Field = "q4", Indexed = false, Caption = "升學-入學方式")]
         public int? Q4 { get; set; }
 
         /// <summary>
@@ -51,6 +47,18 @@ namespace JH_KH_GraduateSurvey.UDT
         /// </summary>
         [JH_KH_GraduateSurvey.UDT.Field(Field = "q5", Indexed = false, Caption = "未升學未就業-動向")]
         public int? Q5 { get; set; }
+
+        /// <summary>
+        /// 是否需要教育部協助
+        /// </summary>
+        [JH_KH_GraduateSurvey.UDT.Field(Field = "q6", Indexed = false, Caption = "需教育部協助")]
+        public string Q6 { get; set; }
+
+        /// <summary>
+        /// 備註
+        /// </summary>
+        [JH_KH_GraduateSurvey.UDT.Field(Field = "memo", Indexed = false, Caption = "備註")]
+        public string Memo { get; set; }
 
         /// <summary>
         /// 最後匯入時間

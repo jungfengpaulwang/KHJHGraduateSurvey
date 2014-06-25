@@ -1,14 +1,14 @@
-﻿using Campus.Windows;
-using FISCA.Data;
-using FISCA.Permission;
-using FISCA.UDT;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
+using Campus.Windows;
+using FISCA.Data;
+using FISCA.Permission;
+using FISCA.UDT;
 
 namespace JH_KH_GraduateSurvey.DetailContent
 {
@@ -46,9 +46,7 @@ namespace JH_KH_GraduateSurvey.DetailContent
             _Listener = new ChangeListener();
             _Listener.Add(new DataGridViewSource(this.dgvData));
             _Listener.Add(new TextBoxSource(this.txtSurveyYear));
-            //_Listener.Add(new ComboBoxSource(this.cboSemester, ComboBoxSource.ListenAttribute.Text));
-            //this.IsPublic.ValueChanged += new EventHandler(IsPublic_ValueChanged);
-            //_Listener.Add(new CheckBoxSource(this.IsPublic));
+            _Listener.Add(new TextBoxSource(this.txtMemo));
             _Listener.StatusChanged += new EventHandler<ChangeEventArgs>(Listener_StatusChanged);
 
             this.dgvData.CellEnter += new DataGridViewCellEventHandler(dgvData_CellEnter);
@@ -75,8 +73,8 @@ namespace JH_KH_GraduateSurvey.DetailContent
 
             this.InitSchoolYear();
             this.form_loaded = true;
-            //this._BGWLoadData.RunWorkerAsync();
         }
+
         private void InitSchoolYear()
         {
             int school_year;
@@ -192,7 +190,16 @@ namespace JH_KH_GraduateSurvey.DetailContent
 
         private void _BGWLoadData_DoWork(object sender, DoWorkEventArgs e)
         {
-            string SQL = string.Format(@"select q1 as 升學與就業情形, q2 as 升學：就讀學校情形, q3 as 升學：入學方式, q4 as 升學：學制別, q5 as 未升學未就業：動向, survey_year as 填報學年度 from $ischool.jh_kh.graduate_survey_approach where ref_student_id={0} order by last_update_time DESC", this._RunningKey);
+            string SQL = string.Format(@"select 
+                q1 as 升學與就業情形,
+                q2 as 升學：就讀學校情形, 
+                q3 as 升學：學制別, 
+                q4 as 升學：入學方式, 
+                q5 as 未升學未就業：動向, 
+                q6 as 是否需要教育部協助,
+                memo as 備註,
+                survey_year as 填報學年度 
+                from $ischool.jh_kh.graduate_survey_approach where ref_student_id={0} order by last_update_time DESC", this._RunningKey);
 
             DataTable dataTable = Query.Select(SQL);
 
@@ -217,6 +224,9 @@ namespace JH_KH_GraduateSurvey.DetailContent
 
             this.dgvData.Rows.Clear();
             this.txtSurveyYear.Text = string.Empty;
+            this.txtMemo.Text = string.Empty;
+            this._Errors.SetError(txtMemo, string.Empty);
+            this._Errors.SetError(txtSurveyYear, string.Empty);
 
             if (result == null)
             {
@@ -224,7 +234,10 @@ namespace JH_KH_GraduateSurvey.DetailContent
                 return;
             }
             else
+            {
                 this.lblMessage.Text = string.Empty;
+                this.txtMemo.Text = string.Empty;
+            }
 
             DataTable dataTable = result as DataTable;
             if (dataTable == null)
@@ -242,11 +255,13 @@ namespace JH_KH_GraduateSurvey.DetailContent
             {
                 row = dataTable.Rows[0];
                 this.txtSurveyYear.Text = row["填報學年度"] + "";
+                this.txtMemo.Text = row["備註"] + "";
             }
+
             int column_index = 0;
             foreach (DataColumn column in dataTable.Columns)
             {
-                if (column.ColumnName == "填報學年度")
+                if (column.ColumnName == "填報學年度" || column.ColumnName=="備註")
                     continue;
 
                 List<object> source = new List<object>();
@@ -266,13 +281,16 @@ namespace JH_KH_GraduateSurvey.DetailContent
                         cell.DataSource = new string[] { "", "1", "2", "3", "4", "5", "6", "7", "8" };
                         break;
                     case 2:
-                        cell.DataSource = new string[] { "", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+                        cell.DataSource = new string[] { "", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
                         break;
                     case 3:
-                        cell.DataSource = new string[] { "", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+                        cell.DataSource = new string[] { "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18" };
                         break;
                     case 4:
-                        cell.DataSource = new string[] { "", "1", "2", "3", "4", "5", "6" };
+                        cell.DataSource = new string[] { "", "1", "2", "3", "4", "5", "6"};
+                        break;
+                    case 5:
+                        cell.DataSource = new string[] { "", "是", "否" };
                         break;
                 }
                 if (cell.DataSource != null)
@@ -307,6 +325,12 @@ namespace JH_KH_GraduateSurvey.DetailContent
         {
             bool is_validated = true;
 
+            this._Errors.SetError(this.txtMemo, string.Empty);
+
+            foreach (DataGridViewRow row in dgvData.Rows)
+                foreach (DataGridViewCell cell in row.Cells)
+                    cell.ErrorText = string.Empty;
+
             uint survey_year;
             if (uint.TryParse(this.txtSurveyYear.Text.Trim(), out survey_year))
                 this._Errors.SetError(this.txtSurveyYear, string.Empty);
@@ -321,6 +345,7 @@ namespace JH_KH_GraduateSurvey.DetailContent
             string string_Q3 = this.dgvData.Rows[2].Cells[1].Value + "";
             string string_Q4 = this.dgvData.Rows[3].Cells[1].Value + "";
             string string_Q5 = this.dgvData.Rows[4].Cells[1].Value + "";
+            string string_Q6 = this.dgvData.Rows[5].Cells[1].Value + "";
 
             int int_Q1;
 
@@ -334,7 +359,8 @@ namespace JH_KH_GraduateSurvey.DetailContent
                 this.dgvData.Rows[0].Cells[1].ErrorText = string.Empty;
                 int_Q1 = int.Parse(string_Q1);
             }
-            //  升學
+
+            #region 升學檢查
             if (int_Q1 == 1)
             {
                 if (string.IsNullOrEmpty(string_Q2))
@@ -365,7 +391,9 @@ namespace JH_KH_GraduateSurvey.DetailContent
                     this.dgvData.Rows[3].Cells[1].ErrorText = string.Empty;
                 }
             }
-            //  升學或就業
+            #endregion
+
+            #region 升學或就業
             if (int_Q1 == 1 || int_Q1 == 2)
             {
                 if (!string.IsNullOrEmpty(string_Q5))
@@ -378,7 +406,9 @@ namespace JH_KH_GraduateSurvey.DetailContent
                     this.dgvData.Rows[4].Cells[1].ErrorText = string.Empty;
                 }
             }
-            //  未升學未就業：動向，必須填寫
+            #endregion
+
+            #region 未升學未就業：動向，必須填寫
             if (int_Q1 == 3)
             {
                 if (string.IsNullOrEmpty(string_Q5))
@@ -391,7 +421,9 @@ namespace JH_KH_GraduateSurvey.DetailContent
                     this.dgvData.Rows[4].Cells[1].ErrorText = string.Empty;
                 }
             }
-            //  非升學
+            #endregion
+       
+            #region 非升學
             if (int_Q1 == 3 || int_Q1 == 2)
             {
                 //  升學：就讀學校情形，不得填寫
@@ -425,6 +457,113 @@ namespace JH_KH_GraduateSurvey.DetailContent
                     this.dgvData.Rows[3].Cells[1].ErrorText = string.Empty;
                 }
             }
+            #endregion
+
+            #region 檢查就讀學校（q2）
+            if (!string.IsNullOrEmpty(string_Q2))
+            {
+                if (string_Q2.Equals("5"))
+                {
+                    if (!string_Q3.Equals("8"))
+                    {
+                        this.dgvData.Rows[2].Cells[1].ErrorText = "「就讀學校填」填寫 5 時，學制別僅填8。";
+                        is_validated = false;
+                    }
+                    else
+                        this.dgvData.Rows[2].Cells[1].ErrorText = string.Empty;
+
+                    List<string> Q4Content = new List<string>() { "16", "17" };
+
+                    if (!Q4Content.Contains(string_Q4))
+                    {
+                        this.dgvData.Rows[3].Cells[1].ErrorText = "「就讀學校填」填寫 5 時，入學方式僅填16、17。";
+                        is_validated = false;
+                    }else
+                        this.dgvData.Rows[3].Cells[1].ErrorText = string.Empty;
+                }
+
+                if (string_Q2.Equals("6"))
+                {
+                    if (!string_Q3.Equals("9"))
+                    {
+                        this.dgvData.Rows[2].Cells[1].ErrorText = "「就讀學校填」填寫 6 時，學制別僅填9。";
+                        is_validated = false;
+                    }else
+                        this.dgvData.Rows[2].Cells[1].ErrorText = string.Empty;
+
+                    if (!(string_Q4.Equals("3")))
+                    {
+                        this.dgvData.Rows[3].Cells[1].ErrorText = "「就讀學校填」填寫 6 時，入學方式僅填3。";
+                        is_validated = false;
+                    }else
+                        this.dgvData.Rows[3].Cells[1].ErrorText = string.Empty;
+                }
+
+                if (string_Q2.Equals("7") ||
+                    string_Q2.Equals("8"))
+                {
+                    if (!string_Q3.Equals("9"))
+                    {
+                        this.dgvData.Rows[2].Cells[1].ErrorText = "「就讀學校填」填寫 7、8 時，學制別僅填9。";
+                        is_validated = false;
+                    }
+                    else
+                        this.dgvData.Rows[2].Cells[1].ErrorText = string.Empty;
+
+                    if (!(string_Q4.Equals("18")))
+                    {
+                        this.dgvData.Rows[3].Cells[1].ErrorText = "「就讀學校填」填寫 7、8 時，入學方式僅填18。";
+                        is_validated = false;
+                    }else
+                        this.dgvData.Rows[3].Cells[1].ErrorText = string.Empty;
+                }
+            }
+            #endregion
+
+            #region 檢查未升學未就業動向
+            if (!string.IsNullOrEmpty(string_Q5))
+            {
+                if (string_Q5.Equals("2"))
+                {
+                    if (string.IsNullOrEmpty(string_Q6))
+                    {
+                        this.dgvData.Rows[5].Cells[1].ErrorText = "「未升學未就業：動向」為2在家,請選填「是」「否」需教育部協助選項。";
+                        is_validated = false;
+
+                    }else
+                    {
+                        this.dgvData.Rows[5].Cells[1].ErrorText = string.Empty;
+
+                        if (string_Q6.Equals("是"))
+                        {
+                            if (string.IsNullOrEmpty(txtMemo.Text))
+                            {
+                                this._Errors.SetError(txtMemo, "若未升學未就業：動向為2在家，並需教育部協助，請於「備註」欄填寫聯絡電話及通訊地址");
+                                is_validated = false;
+                            }
+                        }
+                    }
+                }
+
+                if (string_Q5.Equals("1"))
+                {
+                    if (string.IsNullOrEmpty(txtMemo.Text))
+                    {
+                        this._Errors.SetError(txtMemo,"「未升學未就業：動向」為1失聯,請於「備註」欄中註明失聯原因(如家長不知學生去向、電話空號等。");
+                        is_validated = false;
+                    }
+                }
+
+                if (string_Q5.Equals("6"))
+                {
+                    if (string.IsNullOrEmpty(txtMemo.Text))
+                    {
+                        this._Errors.SetError(txtMemo,"「未升學未就業：動向」為6其他,請於「備註」欄中註明情況。");
+                        is_validated = false;
+                    }
+                }
+            }
+            #endregion
 
             return is_validated;
         }
@@ -444,14 +583,19 @@ namespace JH_KH_GraduateSurvey.DetailContent
             string string_Q3 = this.dgvData.Rows[2].Cells[1].Value + "";
             string string_Q4 = this.dgvData.Rows[3].Cells[1].Value + "";
             string string_Q5 = this.dgvData.Rows[4].Cells[1].Value + "";
+            string string_Q6 = this.dgvData.Rows[5].Cells[1].Value + "";
 
             int int_QQ;
 
+            #region 儲存UDT資料
             UDT.Approach approach = new UDT.Approach();
 
             approach.LastUpdateTime = DateTime.Now;
             approach.StudentID = int.Parse(this.PrimaryKey);
             approach.SurveyYear = int.Parse(this.txtSurveyYear.Text.Trim());
+            approach.Q6 = string_Q6;
+            approach.Memo = txtMemo.Text;
+
             approach.Q1 = int.Parse(this.dgvData.Rows[0].Cells[1].Value + "");
             if (int.TryParse(string_Q2, out int_QQ))
                 approach.Q2 = int_QQ;
@@ -469,6 +613,7 @@ namespace JH_KH_GraduateSurvey.DetailContent
                 approach.Q5 = int_QQ;
             else
                 approach.Q5 = null;
+            #endregion
 
             this._BGWSaveData.RunWorkerAsync(approach);
         }
@@ -493,29 +638,6 @@ namespace JH_KH_GraduateSurvey.DetailContent
 
             records.Add(approach);
             records.SaveAll();
-
-                //if (scattendExts.Count > 0)
-                //{
-                //    CourseRecord courseRecord = Course.SelectByID(PrimaryKey);
-                //    Dictionary<string, StudentRecord> dicStudentRecords = Student.SelectByIDs(scattendExts.Select(x => x.StudentID.ToString())).ToDictionary(x => x.ID);
-
-                //    LogSaver logBatch = ApplicationLog.CreateLogSaverInstance();
-                //    foreach (SCAttendExt deletedRecord in scattendExts)
-                //    {
-                //        StudentRecord student = dicStudentRecords[deletedRecord.StudentID.ToString()];
-
-                //        StringBuilder sb = new StringBuilder();
-                //        sb.Append("學生「" + student.Name + "」，學號「" + student.StudentNumber + "」");
-                //        sb.AppendLine("被刪除一筆「修課記錄」。");
-                //        sb.AppendLine("詳細資料：");
-                //        sb.Append("開課「" + courseRecord.Name + "」\n");
-                //        sb.Append("報告小組「" + deletedRecord.Group + "」\n");
-                //        sb.Append("停修「" + (deletedRecord.IsCancel ? "是" : "否") + "」\n");
-
-                //        logBatch.AddBatch("管理學生修課.刪除", "刪除", "course", PrimaryKey, sb.ToString());
-                //    }
-                //    logBatch.LogBatch(true);
-                //}
         }
 
         private void ResetOverrideButton()

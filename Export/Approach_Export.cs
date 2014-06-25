@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Linq;
-using System.Windows.Forms;
-using FISCA.Data;
-//using FISCA.LogAgent;
-using FISCA.Presentation.Controls;
-using System.Threading.Tasks;
-using Aspose.Cells;
 using System.IO;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Aspose.Cells;
+using FISCA.Data;
+using FISCA.LogAgent;
+using FISCA.Presentation.Controls;
 
 namespace JH_KH_GraduateSurvey.Export
 {
@@ -18,9 +17,10 @@ namespace JH_KH_GraduateSurvey.Export
     /// </summary>
     public partial class Approach_Export : BaseForm
     {
+        private StringBuilder strLog = new StringBuilder();
         private QueryHelper Query;
         private List<string> selectedFields;
-        private List<string> RealOnlyFields = new List<string>() { "身分證號", "姓名", "填報學年度", "升學與就業情形", "升學：就讀學校情形", "升學：入學方式", "升學：學制別", "未升學未就業：動向" };
+        private List<string> RealOnlyFields = new List<string>() { "身分證號", "姓名", "填報學年度", "升學與就業情形", "升學：就讀學校情形", "升學：入學方式", "升學：學制別", "未升學未就業：動向", "是否需要教育部協助","備註" };
 
         public List<string> StudentIDs { set; get; }
         public List<string> ClassIDs { set; get; }
@@ -54,41 +54,6 @@ namespace JH_KH_GraduateSurvey.Export
                 this.nudSchoolYear.Value = decimal.Parse((DateTime.Today.Year - 1911).ToString());
             }
         }
-
-        //private void SaveLog(DataTable dataTable)
-        //{
-        //    LogSaver logBatch = ApplicationLog.CreateLogSaverInstance();
-        //    List<string> system_IDs = new List<string>();
-        //    List<string> Fields = new List<string>();
-
-        //    if (this.selectedFields == null || this.selectedFields.Count == 0)
-        //        return;
-
-        //    dataTable.Columns.Cast<DataColumn>().ToList().ForEach((x) =>
-        //    {
-        //        if (this.selectedFields.Contains(x.ColumnName) && !Fields.Contains(x.ColumnName)) 
-        //            Fields.Add(x.ColumnName);
-        //    });
-        //    dataTable.Rows.Cast<DataRow>().ToList().ForEach(x => system_IDs.Add(x[this.keyField] + ""));
-        //    string strSystemIDs = String.Join(",", system_IDs);
-        //    string strFields = String.Join(",", Fields);
-        //    string strCategory = string.Empty;
-
-        //    if (this.Text.IndexOf("學生") > 0) strCategory = "student";
-        //    if (this.Text.IndexOf("班級") > 0) strCategory = "class";
-        //    if (this.Text.IndexOf("教師") > 0) strCategory = "teacher";
-        //    if (this.Text.IndexOf("課程") > 0) strCategory = "course";
-
-        //    logBatch.AddBatch(this.Text, strCategory, this.keyField + "：" + strSystemIDs, "匯出欄位：" + strFields);
-        //    try
-        //    {
-        //        logBatch.LogBatch(true);
-        //    }
-        //    catch
-        //    {
-
-        //    }
-        //}
 
         private void ResetSelectedFields()
         {
@@ -161,14 +126,32 @@ namespace JH_KH_GraduateSurvey.Export
                     string SQL = string.Empty;
                     if (this.SourceType.ToLower() == "student")
                     {
-                        SQL = string.Format("select table_a.id_number as 身分證號, table_a.class_name as 畢業班級, table_a.seat_no as 座號, table_a.student_number as 學號, table_a.name as 姓名, table_a.permanent_phone as 戶籍電話, table_a.contact_phone as 聯絡電話, table_a.sms_phone as 行動電話, table_a.other_phones_1 as 其它電話1, table_a.other_phones_2 as 其它電話2, table_a.other_phones_3 as 其它電話3, table_a.監護人電話, table_a.父親電話, table_a.母親電話, {0} as 填報學年度, table_b.q1 as 升學與就業情形, table_b.q2 as 升學：就讀學校情形, table_b.q3 as 升學：入學方式, table_b.q4 as 升學：學制別, table_b.q5 as 未升學未就業：動向 from (select student.id as student_id, class.class_name, student.seat_no, student.student_number, student.name, student.id_number, student.permanent_phone, student.contact_phone, student.sms_phone, xpath_string(student.other_phones,'PhoneNumber[1]') as other_phones_1, xpath_string(student.other_phones,'PhoneNumber[2]') as other_phones_2, xpath_string(student.other_phones,'PhoneNumber[3]') as other_phones_3, class.id as class_id, xpath_string(custodian_other_info,'Phone') as 監護人電話, xpath_string(father_other_info,'Phone') as 父親電話, xpath_string(mother_other_info,'Phone') as 母親電話 from student left join class on class.id=student.ref_class_id) as table_a left join (select ref_student_id as student_id, survey_year, q1, q2, q3, q4, q5, last_update_time from $ischool.jh_kh.graduate_survey_approach where survey_year={0}) as table_b on table_b.student_id=table_a.student_id where table_a.student_id in ({1}) order by class_name, seat_no, student_number, last_update_time DESC", school_year, string.Join(",", this.StudentIDs));
+                        SQL = string.Format("select table_a.id_number as 身分證號, table_a.class_name as 畢業班級, table_a.seat_no as 座號, table_a.student_number as 學號, table_a.name as 姓名, table_a.permanent_phone as 戶籍電話, table_a.contact_phone as 聯絡電話, table_a.sms_phone as 行動電話, table_a.other_phones_1 as 其它電話1, table_a.other_phones_2 as 其它電話2, table_a.other_phones_3 as 其它電話3, table_a.監護人電話, table_a.父親電話, table_a.母親電話, {0} as 填報學年度, table_b.q1 as 升學與就業情形, table_b.q2 as 升學：就讀學校情形, table_b.q3 as 升學：學制別, table_b.q4 as 升學：入學方式, table_b.q5 as 未升學未就業：動向,table_b.q6 as 是否需要教育部協助,table_b.memo as 備註  from (select student.id as student_id, class.class_name, student.seat_no, student.student_number, student.name, student.id_number, student.permanent_phone, student.contact_phone, student.sms_phone, xpath_string(student.other_phones,'PhoneNumber[1]') as other_phones_1, xpath_string(student.other_phones,'PhoneNumber[2]') as other_phones_2, xpath_string(student.other_phones,'PhoneNumber[3]') as other_phones_3, class.id as class_id, xpath_string(custodian_other_info,'Phone') as 監護人電話, xpath_string(father_other_info,'Phone') as 父親電話, xpath_string(mother_other_info,'Phone') as 母親電話 from student left join class on class.id=student.ref_class_id) as table_a left join (select ref_student_id as student_id, survey_year, q1, q2, q3, q4, q5, q6, memo, last_update_time from $ischool.jh_kh.graduate_survey_approach where survey_year={0}) as table_b on table_b.student_id=table_a.student_id where table_a.student_id in ({1}) order by class_name, seat_no, student_number, last_update_time DESC", school_year, string.Join(",", this.StudentIDs));
                     }
                     else if (this.SourceType.ToLower() == "class")
                     {
-                        SQL = string.Format("select table_a.id_number as 身分證號, table_a.class_name as 畢業班級, table_a.seat_no as 座號, table_a.student_number as 學號, table_a.name as 姓名, table_a.permanent_phone as 戶籍電話, table_a.contact_phone as 聯絡電話, table_a.sms_phone as 行動電話, table_a.other_phones_1 as 其它電話1, table_a.other_phones_2 as 其它電話2, table_a.other_phones_3 as 其它電話3, table_a.監護人電話, table_a.父親電話, table_a.母親電話, {0} as 填報學年度, table_b.q1 as 升學與就業情形, table_b.q2 as 升學：就讀學校情形, table_b.q3 as 升學：入學方式, table_b.q4 as 升學：學制別, table_b.q5 as 未升學未就業：動向 from (select student.id as student_id, class.class_name, student.seat_no, student.student_number, student.name, student.id_number, student.permanent_phone, student.contact_phone, student.sms_phone, xpath_string(student.other_phones,'PhoneNumber[1]') as other_phones_1, xpath_string(student.other_phones,'PhoneNumber[2]') as other_phones_2, xpath_string(student.other_phones,'PhoneNumber[3]') as other_phones_3, class.id as class_id, xpath_string(custodian_other_info,'Phone') as 監護人電話, xpath_string(father_other_info,'Phone') as 父親電話, xpath_string(mother_other_info,'Phone') as 母親電話 from student left join class on class.id=student.ref_class_id) as table_a left join (select ref_student_id as student_id, survey_year, q1, q2, q3, q4, q5, last_update_time from $ischool.jh_kh.graduate_survey_approach where survey_year={0}) as table_b on table_b.student_id=table_a.student_id where table_a.class_id in ({1}) order by class_name, seat_no, student_number, last_update_time DESC", school_year, string.Join(",", this.ClassIDs));
+                        SQL = string.Format("select table_a.id_number as 身分證號, table_a.class_name as 畢業班級, table_a.seat_no as 座號, table_a.student_number as 學號, table_a.name as 姓名, table_a.permanent_phone as 戶籍電話, table_a.contact_phone as 聯絡電話, table_a.sms_phone as 行動電話, table_a.other_phones_1 as 其它電話1, table_a.other_phones_2 as 其它電話2, table_a.other_phones_3 as 其它電話3, table_a.監護人電話, table_a.父親電話, table_a.母親電話, {0} as 填報學年度, table_b.q1 as 升學與就業情形, table_b.q2 as 升學：就讀學校情形, table_b.q3 as 升學：學制別, table_b.q4 as 升學：入學方式, table_b.q5 as 未升學未就業：動向,table_b.q6 as 是否需要教育部協助,table_b.memo as 備註 from (select student.id as student_id, class.class_name, student.seat_no, student.student_number, student.name, student.id_number, student.permanent_phone, student.contact_phone, student.sms_phone, xpath_string(student.other_phones,'PhoneNumber[1]') as other_phones_1, xpath_string(student.other_phones,'PhoneNumber[2]') as other_phones_2, xpath_string(student.other_phones,'PhoneNumber[3]') as other_phones_3, class.id as class_id, xpath_string(custodian_other_info,'Phone') as 監護人電話, xpath_string(father_other_info,'Phone') as 父親電話, xpath_string(mother_other_info,'Phone') as 母親電話 from student left join class on class.id=student.ref_class_id) as table_a left join (select ref_student_id as student_id, survey_year, q1, q2, q3, q4, q5, q6, memo, last_update_time from $ischool.jh_kh.graduate_survey_approach where survey_year={0}) as table_b on table_b.student_id=table_a.student_id where table_a.class_id in ({1}) order by class_name, seat_no, student_number, last_update_time DESC", school_year, string.Join(",", this.ClassIDs));
                     }
 
                     DataTable dataTable = Query.Select(SQL);
+
+                    strLog.Clear();
+
+                    strLog.AppendLine("詳細資料：");
+
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        for(int i=0;i<dataTable.Columns.Count;i++)
+                        {
+                            string ColumnName = dataTable.Columns[i].ColumnName;
+                            string ColumnValue = "" + row[i];
+
+                            strLog.Append(ColumnName +"「" + ColumnValue +"」");
+                        }
+
+                        strLog.Append(System.Environment.NewLine);
+                    }
+
                     string fileName = string.Empty;
                     if (this.radioAllStudentInOneFile.Checked)
                     {
@@ -230,6 +213,8 @@ namespace JH_KH_GraduateSurvey.Export
                     MessageBox.Show(x.Exception.InnerException.Message);
                     return;
                 }
+
+                ApplicationLog.Log("高雄市國中畢業學生進路調查.匯出", "匯出畢業學生進路","student","",strLog.ToString());
                 
                 System.Diagnostics.Process.Start(x.Result);
             }, System.Threading.CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
@@ -264,7 +249,7 @@ namespace JH_KH_GraduateSurvey.Export
                     this.AddComment(worksheet, note, columnIndex.Value);
             }
             columnName = "升學：入學方式";
-            note = "填代碼 1~9。(1：申請入學；2：甄選入學；3：登記分發；4：輔導分發(實用技能學程)；5：個別招生；6：技優保送；7：免試入學；8：十二年安置；9：其他)";
+            note = "填代碼 1~18。(1：免試入學-校內直升；2：免試入學-分區免試；3：免試入學-單獨招生；4：免試入學-技優甄審；5：特色招生-考試分發入學；6：特色招生-職業類群科；7：特色招生-藝才班；8：特色招生-體育班；9：特色招生-科學班；10：私校單獨招生；11：運動績優；12：實用技能學程；13：產業特殊需求；14：建教合作班；15：身心障礙生適性輔導安置；16：五專免試入學；17：五專特色招生考試分發入學；18：其他)";
             if (this.selectedFields.Contains(columnName))
             {
                 byte? columnIndex = this.GetColumnIndex(worksheet, columnName);
@@ -287,7 +272,22 @@ namespace JH_KH_GraduateSurvey.Export
                 if (columnIndex.HasValue)
                     this.AddComment(worksheet, note, columnIndex.Value);
             }
-                
+            columnName = "是否需要教育部協助";
+            note = "若未升學未就業：動向為2在家，請選填「是」或「否」需教育部協助選項，需教育部協助者請於「備註」欄填寫聯絡電話及通訊地址。";
+            if (this.selectedFields.Contains(columnName))
+            {
+                byte? columnIndex = this.GetColumnIndex(worksheet, columnName);
+                if (columnIndex.HasValue)
+                    this.AddComment(worksheet, note, columnIndex.Value);
+            }
+            columnName = "備註";
+            note = "需教育部協助者請於「備註」欄填寫聯絡電話及通訊地址、若未升學未就業：動向為1失聯，請於「備註」欄中註明失聯原因(如家長不知學生去向、電話空號等)、若未升學未就業：動向為6其他，請於「備註」欄中註明情況。";
+            if (this.selectedFields.Contains(columnName))
+            {
+                byte? columnIndex = this.GetColumnIndex(worksheet, columnName);
+                if (columnIndex.HasValue)
+                    this.AddComment(worksheet, note, columnIndex.Value);
+            } 
         }
 
         private void RemoveComment(Worksheet worksheet)
@@ -302,7 +302,6 @@ namespace JH_KH_GraduateSurvey.Export
             Comment comment = worksheet.Comments[commentIndex];    
             comment.Note = note;
             comment.WidthCM = 20;
-            //comment.AutoSize = true;
         }
 
         private string ReplaceString(string oString)
