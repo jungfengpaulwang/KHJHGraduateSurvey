@@ -48,3 +48,9 @@ D:\KHJHGraduateSurvey\bin\Debug\FISCA.LogAgent.dll
 D:\KHJHGraduateSurvey\bin\Debug\FISCA.LogAgent.pdb
 D:\KHJHGraduateSurvey\bin\Debug\FISCA.LogAgent.xml
 D:\KHJHGraduateSurvey\obj\Debug\JH_KH_GraduateSurvey.csprojResolveAssemblyReference.cache
+D:\KHJHGraduateSurvey\bin\Debug\FISCA.Data.dll
+D:\KHJHGraduateSurvey\bin\Debug\FISCA.Data.pdb
+D:\KHJHGraduateSurvey\bin\Debug\FISCA.Data.xml
+D:\KHJHGraduateSurvey\bin\Debug\FISCA.DSAUtil.dll
+D:\KHJHGraduateSurvey\bin\Debug\FISCA.DSAUtil.pdb
+D:\KHJHGraduateSurvey\bin\Debug\FISCA.DSAUtil.xml

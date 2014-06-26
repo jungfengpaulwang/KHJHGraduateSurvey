@@ -198,6 +198,52 @@ namespace JH_KH_GraduateSurvey.Import
                 }
                 #endregion
 
+                #region 檢查入學方式
+                if (int.TryParse(q4_string, out q4_int))
+                {
+                    //1. 入學方式填12，學制別填5或6。
+                    if (q4_int == 12)
+                    {
+                        if (int.TryParse(q3_string, out q3_int))
+                        {
+                            List<int> Contents = new List<int>() {5,6};
+
+                            if (!Contents.Contains(q3_int))
+                                Messages[x.Position].MessageItems.Add(new MessageItem(EMBA.Validator.ErrorType.Error, EMBA.Validator.ValidatorType.Row, "「入學方式」填12，「學制別」僅填5或6。"));
+                        }
+                    }
+
+                    //2. 入學方式填14，學制別僅填4。
+                    if (q4_int == 14)
+                    {
+                        if (int.TryParse(q3_string, out q3_int))
+                        {
+                            if (q3_int != 4)
+                                Messages[x.Position].MessageItems.Add(new MessageItem(EMBA.Validator.ErrorType.Error, EMBA.Validator.ValidatorType.Row, "「入學方式」填14，「學制別」僅填4。"));
+                        }
+                    }
+
+                    //3. 入學方式填6，學制別僅填1。
+                    if (q4_int == 6)
+                    {
+                        if (int.TryParse(q3_string, out q3_int))
+                        {
+                            if (q3_int != 1)
+                                Messages[x.Position].MessageItems.Add(new MessageItem(EMBA.Validator.ErrorType.Error, EMBA.Validator.ValidatorType.Row, "「入學方式」填6，「學制別」僅填1。"));
+                        }
+                    }
+                    //4. 入學方式填9，學制別僅填3。
+                    if (q4_int == 9)
+                    {
+                        if (int.TryParse(q3_string, out q3_int))
+                        {
+                            if (q3_int != 3)
+                                Messages[x.Position].MessageItems.Add(new MessageItem(EMBA.Validator.ErrorType.Error, EMBA.Validator.ValidatorType.Row, "「入學方式」填9，「學制別」僅填3。"));
+                        }
+                    }
+                }
+                #endregion
+
                 #region 檢查未升學未就業動向
                 if (int.TryParse(q5_string, out q5_int))
                 {

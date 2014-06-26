@@ -520,7 +520,50 @@ namespace JH_KH_GraduateSurvey.DetailContent
             }
             #endregion
 
-            #region 檢查未升學未就業動向
+            #region 檢查入學方式(q4)
+            if (!string.IsNullOrEmpty(string_Q4))
+            {
+                if (string_Q4.Equals("12"))
+                {
+                    List<string> Contents = new List<string>() {"5","6"};
+
+                    if (!Contents.Contains(string_Q3))
+                    {
+                        this.dgvData.Rows[2].Cells[1].ErrorText = "「入學方式」填12，「學制別」僅填5或6。";
+                        is_validated = false;
+                    }
+                }
+
+                if (string_Q4.Equals("14"))
+                {
+                    if (!string_Q3.Equals("4"))
+                    {
+                        this.dgvData.Rows[2].Cells[1].ErrorText = "「入學方式」填14，「學制別」僅填4。";
+                        is_validated = false;
+                    }
+                }
+
+                if (string_Q4.Equals("6"))
+                {
+                    if (!string_Q3.Equals("1"))
+                    {
+                        this.dgvData.Rows[2].Cells[1].ErrorText = "「入學方式」填6，「學制別」僅填1。";
+                        is_validated = false;
+                    }
+                }
+
+                if (string_Q4.Equals("9"))
+                {
+                    if (!string_Q3.Equals("3"))
+                    {
+                        this.dgvData.Rows[2].Cells[1].ErrorText = "「入學方式」填9，「學制別」僅填3。";
+                        is_validated = false;
+                    }
+                }
+            }
+            #endregion
+
+            #region 檢查未升學未就業動向(q5)
             if (!string.IsNullOrEmpty(string_Q5))
             {
                 if (string_Q5.Equals("2"))
