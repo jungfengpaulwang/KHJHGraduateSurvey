@@ -18,9 +18,12 @@
           <Validate AutoCorrect="False" Description="「升學與就業情形」不允許空白，只允許 1~3 的阿拉伯數字。" ErrorType="Error" Validator="升學與就業情形允許範圍" When="" />
         </Field>
         <Field Required="True" Name="升學：就讀學校情形" Description="「升學與就業情形」填寫 1 時，此欄位才需填寫 1~8" EmptyAlsoValidate="False" />
-        <Field Required="True" Name="升學：入學方式" Description="「升學與就業情形」填寫 1 時，此欄位才需填寫 1~9" EmptyAlsoValidate="False" />
+        <Field Required="True" Name="升學：入學方式" Description="「升學與就業情形」填寫 1 時，此欄位才需填寫 1~18" EmptyAlsoValidate="False" />
         <Field Required="True" Name="升學：學制別" Description="「升學與就業情形」填寫 1 時，此欄位才需填寫 1~9" EmptyAlsoValidate="False" />
         <Field Required="True" Name="未升學未就業：動向" Description="「升學與就業情形」填寫 3 時，此欄位才需填寫 1~6" EmptyAlsoValidate="False" />
+        
+        <Field Required="True" Name="是否需要教育部協助" Description="若未升學未就業：動向為2在家，請選填「是」或「否」需教育部協助選項，需教育部協助者請於「備註」欄填寫聯絡電話及通訊地址" EmptyAlsoValidate="False" />
+        <Field Required="True" Name="備註" Description="需教育部協助者請於「備註」欄填寫聯絡電話及通訊地址、若未升學未就業：動向為1失聯，請於「備註」欄中註明失聯原因(如家長不知學生去向、電話空號等)、若未升學未就業：動向為6其他，請於「備註」欄中註明情況。" EmptyAlsoValidate="False" />
     </FieldList>
     <ValidatorList>
       <FieldValidator Name="升學與就業情形允許範圍" Type="Integer">
